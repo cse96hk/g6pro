@@ -1,0 +1,62 @@
+
+
+<div class="slider-wrap con" data-slick-autoplay-status="Y">
+    <div class="slider main-slider con">
+      <div class="slide-item" style="line-height:145px;color:#666;text-align:center;padding:0">
+          <div class="slide-con" data-dot-title="게시물이 없습니다.">
+            <div class="slide-txt">
+              <h2 class="txt-tt">게시물이 없습니다.</h2>
+              <p class="txt-desc">게시물이 없습니다.</p>
+          </div>
+          <picture class="img-box">
+            <a href="#" class="lt_img">
+                <img src="http://0.0.0.0:8000/static/img/dummy-donotremove.png?ver=1.0.0" alt="" width="500" height="350">
+                <span class="is_label is_noimage">No Image</span>
+            </a>
+          </picture>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 상단 메인 배너 slick
+    $('.main-slider').slick({
+        dots:true,
+        fade:true,
+        customPaging: function(slider, i) { 
+            const slideCon = $(slider.$slides[i]).find('.slide-con');
+            return `
+                <button class="tab">
+                    <span class="s-line-fill"></span>
+                    <div class="s-indicator only-pc">
+                        <a href="/board/${slideCon.attr('data-dot-bo-table')}/${slideCon.attr('data-dot-wr-id')}" class="inner-txt">
+                            ${$(slider.$slides[i]).find('.slide-con').attr('data-dot-title')}
+                        </a>
+                    </div>
+                </button>
+            `;
+        },
+    });
+
+    // progressbar 다 차면 슬라이드 시키기
+    setInterval(function() {
+        $('.slider-wrap > .main-slider').each(function(index, node) {
+            var $slider = $(node);
+            
+            if ( $slider.parent().attr('data-slick-autoplay-status') !== 'N' ) {
+                var width = $slider.find('.slick-dots .slick-active > button > .s-line-fill').css('width');
+                var buttonWidth = $slider.find('.slick-dots .slick-active > button').css('width');
+
+                if ( width == buttonWidth ) {
+                    $slider.slick('slickNext');
+                }
+            }
+        });
+    }, 500);
+
+    // 최신글 없을 시 슬라이더 삭제
+    if ($('.slide-con').length == 0) {
+        $('.slick-dots').remove();
+    }
+</script>
